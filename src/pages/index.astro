@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+
+import PageShell from "../components/PageShell.astro";
+import PostsList from "../components/PostsList.astro";
+import SubscribeForm from "../components/SubscribeForm.astro";
+import { siteConfig } from "../config/site";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const { title, description } = siteConfig.meta.home;
+const posts = (await getCollection("posts"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const pinnedPosts = posts.filter((post) => post.data.pinned).slice(0, 3);
+const recentPosts = posts.filter((post) => !post.data.pinned).slice(0, 3);
+---
+
+<SiteLayout title={title} description={description} canonicalPath="/">
+  <PageShell labelledby="home-title">
+    <h1 id="home-title" class="sr-only">{siteConfig.name}</h1>
+
+    <PostsList
+      posts={pinnedPosts}
+      title="Pinned"
+      titleId="pinned-posts-title"
+    />
+
+    <PostsList
+      posts={recentPosts}
+      title="Recent"
+      titleId="recent-posts-title"
+    />
+
+    <SubscribeForm />
+  </PageShell>
+</SiteLayout>

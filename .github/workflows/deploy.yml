@@ -1,0 +1,70 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Restore private Goga fonts
+        env:
+          PRIVATE_FONTS_DEPLOY_KEY: ${{ secrets.PRIVATE_FONTS_DEPLOY_KEY }}
+          PRIVATE_FONTS_REPOSITORY: ${{ vars.PRIVATE_FONTS_REPOSITORY }}
+        run: |
+          set -euo pipefail
+
+          if [ -z "${PRIVATE_FONTS_DEPLOY_KEY}" ]; then
+            echo "Missing GitHub Actions secret: PRIVATE_FONTS_DEPLOY_KEY" >&2
+            exit 1
+          fi
+
+          if [ -z "${PRIVATE_FONTS_REPOSITORY}" ]; then
+            echo "Missing GitHub Actions variable: PRIVATE_FONTS_REPOSITORY" >&2
+            exit 1
+          fi
+
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "${PRIVATE_FONTS_DEPLOY_KEY}" > "$HOME/.ssh/private-fonts"
+          chmod 600 "$HOME/.ssh/private-fonts"
+          ssh-keyscan github.com >> "$HOME/.ssh/known_hosts"
+
+          GIT_SSH_COMMAND="ssh -i $HOME/.ssh/private-fonts -o IdentitiesOnly=yes" \
+            git clone --depth 1 "git@github.com:${PRIVATE_FONTS_REPOSITORY}.git" /tmp/private-fonts
+
+          mkdir -p public/fonts/goga
+          cp /tmp/private-fonts/goga/*.otf public/fonts/goga/
+
+      - name: Install, build, and upload
+        uses: withastro/action@v6
+        env:
+          PUBLIC_SUBSCRIBE_ENDPOINT: ${{ vars.PUBLIC_SUBSCRIBE_ENDPOINT }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+        with:
+          package-manager: bun@1.3.10
+          build-cmd: bun run verify:fonts && bun run build && bun run verify:sitemap
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v5

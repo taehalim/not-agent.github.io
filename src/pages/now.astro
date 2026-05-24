@@ -1,0 +1,41 @@
+---
+import PageShell from "../components/PageShell.astro";
+import { siteConfig } from "../config/site";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const { title, description } = siteConfig.meta.now;
+---
+
+<SiteLayout title={title} description={description} canonicalPath="/now/">
+  <PageShell labelledby="now-title">
+    <h1
+      id="now-title"
+      class="mb-5 max-w-[var(--text-width)] text-base leading-[1.4] font-normal text-muted"
+    >
+      Now
+    </h1>
+
+    <section class="max-w-[var(--text-width)]">
+      <h2 class="mb-[0.8rem] text-base leading-[1.45] font-normal text-text">
+        Current
+      </h2>
+      <p class="m-0 text-base leading-[1.6] font-normal text-text">
+        Building AI agent products and developer tools in Seoul. I am focused on
+        workflows that make agent behavior easier to steer, review, and trust.
+      </p>
+    </section>
+
+    <section class="mt-10 max-w-[var(--text-width)]">
+      <h2 class="mb-[0.8rem] text-base leading-[1.45] font-normal text-text">
+        Working On
+      </h2>
+      <ul
+        class="m-0 grid list-disc gap-[0.7rem] pl-5 text-base leading-[1.6] font-normal text-text marker:text-muted"
+      >
+        <li>Interfaces for controlling coding agents without heavy context.</li>
+        <li>Local-first tools that stay close to the developer's workspace.</li>
+        <li>Writing clearer notes about agent products and software craft.</li>
+      </ul>
+    </section>
+  </PageShell>
+</SiteLayout>

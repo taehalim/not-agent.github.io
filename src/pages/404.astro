@@ -1,0 +1,20 @@
+---
+import PageShell from "../components/PageShell.astro";
+import { siteConfig } from "../config/site";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const { title, description } = siteConfig.meta.notFound;
+---
+
+<SiteLayout title={title} description={description} canonicalPath="/404/">
+  <PageShell>
+    <h1 class="m-0 text-base leading-[1.4] font-normal text-text">
+      Page not found.
+    </h1>
+    <a
+      href={siteConfig.links.home}
+      class="mt-4 inline-block text-base leading-[1.4] text-muted hover:text-text focus-visible:text-text"
+      >Return home</a
+    >
+  </PageShell>
+</SiteLayout>

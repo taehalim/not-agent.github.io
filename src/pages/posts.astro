@@ -1,0 +1,24 @@
+---
+import { getCollection } from "astro:content";
+
+import PageShell from "../components/PageShell.astro";
+import PostsList from "../components/PostsList.astro";
+import { siteConfig } from "../config/site";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const { title, description } = siteConfig.meta.posts;
+const posts = (await getCollection("posts"))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<SiteLayout title={title} description={description} canonicalPath="/posts/">
+  <PageShell>
+    <PostsList
+      posts={posts}
+      title="All"
+      titleId="posts-title"
+      headingLevel="h1"
+    />
+  </PageShell>
+</SiteLayout>

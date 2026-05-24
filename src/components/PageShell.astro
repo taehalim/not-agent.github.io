@@ -1,0 +1,14 @@
+---
+interface Props {
+  labelledby?: string;
+  class?: string;
+}
+
+const { labelledby, class: className } = Astro.props;
+const shellClass =
+  "page-shell mx-auto w-[min(100%_-_var(--page-gutter),var(--content-width))] flex-1 pb-[clamp(4rem,7vw,5rem)]";
+---
+
+<main class:list={[shellClass, className]} aria-labelledby={labelledby}>
+  <slot />
+</main>

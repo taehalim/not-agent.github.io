@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Generated Astro types
+.astro/
+
+# Python cache
+__pycache__/
+
+# Environment
+.env
+.env.*
+
+# Private font binaries
+public/fonts/goga/*.otf
+public/fonts/goga/*.ttf
+public/fonts/goga/*.woff
+public/fonts/goga/*.woff2
+!public/fonts/goga/.gitkeep
+!public/fonts/goga/README.md
+!public/fonts/goga/Befonts-License.txt
+
+# System
+.DS_Store

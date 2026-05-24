@@ -1,0 +1,54 @@
+---
+import { navLinks, siteConfig } from "../config/site";
+
+const currentPath = Astro.url.pathname;
+const isActivePath = (href: string) => {
+  if (href === "/posts/") {
+    return currentPath.startsWith("/posts/");
+  }
+
+  return currentPath === href;
+};
+
+const headerClass =
+  "mx-auto grid w-[min(100%_-_var(--page-gutter),var(--content-width))] justify-items-center gap-3.5 pt-[clamp(4rem,8vw,5rem)] pb-[clamp(2.75rem,6vw,3.25rem)] max-[36rem]:pt-13 max-[36rem]:pb-10";
+const navClass =
+  "flex items-center justify-center gap-6 max-[36rem]:gap-[1.125rem]";
+const navLinkClass =
+  "text-base font-normal leading-[1.4] transition-colors duration-150 hover:text-text focus-visible:text-text";
+---
+
+<header class={headerClass}>
+  <a
+    href={siteConfig.links.home}
+    class="site-title text-[1.875rem] leading-none font-medium text-text max-[36rem]:text-center max-[36rem]:text-[1.625rem] max-[36rem]:leading-[1.1]"
+  >
+    {siteConfig.name}
+  </a>
+
+  <nav class={navClass} aria-label="Primary">
+    {
+      navLinks.map((link) => {
+        const isActive = isActivePath(link.href);
+        const isCurrentPage = currentPath === link.href;
+
+        if (isCurrentPage) {
+          return (
+            <span class:list={[navLinkClass, "text-text"]} aria-current="page">
+              {link.label}
+            </span>
+          );
+        }
+
+        return (
+          <a
+            href={link.href}
+            class:list={[navLinkClass, isActive ? "text-text" : "text-muted"]}
+          >
+            {link.label}
+          </a>
+        );
+      })
+    }
+  </nav>
+</header>

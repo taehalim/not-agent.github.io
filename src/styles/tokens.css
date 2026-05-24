@@ -1,0 +1,51 @@
+@font-face {
+  font-family: "Goga Test";
+  src: url("/fonts/goga/GogaTest-Regular.otf") format("opentype");
+  font-display: block;
+  font-style: normal;
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Goga Test";
+  src: url("/fonts/goga/GogaTest-Medium.otf") format("opentype");
+  font-display: block;
+  font-style: normal;
+  font-weight: 500;
+}
+
+@font-face {
+  font-family: "Goga Test";
+  src: url("/fonts/goga/GogaTest-Semibold.otf") format("opentype");
+  font-display: block;
+  font-style: normal;
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Goga Test";
+  src: url("/fonts/goga/GogaTest-Bold.otf") format("opentype");
+  font-display: block;
+  font-style: normal;
+  font-weight: 700;
+}
+
+@theme {
+  --font-sans: "Goga Test", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:
+    "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+  --color-bg: #000000;
+  --color-text: #f5f5f0;
+  --color-muted: #9d9d96;
+  --color-subtle: #50504a;
+  --color-accent: #ffffff;
+  --color-line: rgb(255 255 255 / 12%);
+}
+
+:root {
+  color-scheme: dark;
+  --content-width: 42rem;
+  --text-width: 38rem;
+  --page-gutter: clamp(2rem, 8vw, 5rem);
+}

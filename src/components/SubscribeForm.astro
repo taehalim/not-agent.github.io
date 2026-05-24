@@ -1,0 +1,177 @@
+---
+import { siteConfig } from "../config/site";
+
+const subscribeEndpoint = siteConfig.subscribe.endpoint;
+const turnstileSiteKey = siteConfig.turnstile.siteKey;
+const isEndpointConfigured = subscribeEndpoint.length > 0;
+const isTurnstileConfigured = turnstileSiteKey.length > 0;
+const isConfigured = isEndpointConfigured && isTurnstileConfigured;
+const unavailableMessage = !isEndpointConfigured
+  ? "Email subscription is not live yet."
+  : "Email verification is not configured yet.";
+---
+
+{
+  isConfigured ? (
+    <script
+      is:inline
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      async
+      defer
+    />
+  ) : null
+}
+
+<section
+  class="mt-[clamp(3rem,6vw,4rem)] grid gap-4 border-t border-line pt-5"
+  aria-labelledby="subscribe-title"
+>
+  <div class="grid max-w-[var(--text-width)] gap-[0.35rem]">
+    <h2
+      id="subscribe-title"
+      class="m-0 text-base leading-[1.4] font-normal text-muted"
+    >
+      Subscribe
+    </h2>
+    <p class="m-0 text-base leading-[1.45] font-normal text-muted">
+      New posts by email. RSS is available too.
+    </p>
+  </div>
+
+  <form
+    class="grid max-w-[var(--text-width)] grid-cols-[minmax(0,1fr)_max-content] gap-3 max-[36rem]:grid-cols-1"
+    data-subscribe-form
+    data-endpoint={subscribeEndpoint}
+    action={isConfigured ? subscribeEndpoint : undefined}
+    method="post"
+    novalidate
+  >
+    <label class="sr-only" for="subscribe-email">Email</label>
+    <input
+      id="subscribe-email"
+      class="min-h-11 min-w-0 rounded-md border border-line bg-transparent px-[0.85rem] text-text placeholder:text-subtle disabled:cursor-not-allowed disabled:opacity-55"
+      type="email"
+      name="email"
+      autocomplete="email"
+      placeholder="you@example.com"
+      required
+      disabled={!isConfigured}
+    />
+    <input
+      class="hidden"
+      type="text"
+      name="website"
+      tabindex="-1"
+      autocomplete="off"
+      aria-hidden="true"
+    />
+    {
+      isConfigured ? (
+        <div
+          class="cf-turnstile col-span-full min-h-[4.0625rem]"
+          data-sitekey={turnstileSiteKey}
+          data-theme="dark"
+        />
+      ) : null
+    }
+    <button
+      class="min-h-11 cursor-pointer rounded-md border border-text bg-text px-[0.95rem] text-bg disabled:cursor-not-allowed disabled:opacity-55"
+      type="submit"
+      disabled={!isConfigured}
+    >
+      Subscribe
+    </button>
+    <p
+      class="col-span-full m-0 min-h-[1.4em] text-[0.95rem] leading-[1.4] text-muted"
+      data-subscribe-message
+      role="status"
+    >
+      {isConfigured ? "" : unavailableMessage}
+    </p>
+  </form>
+</section>
+
+<script>
+  declare global {
+    interface Window {
+      turnstile?: {
+        reset: () => void;
+      };
+    }
+  }
+
+  const subscribeForms = document.querySelectorAll("[data-subscribe-form]");
+
+  subscribeForms.forEach((form) => {
+    const endpoint =
+      form instanceof HTMLFormElement ? form.dataset.endpoint : "";
+    const input = form.querySelector<HTMLInputElement>("[name='email']");
+    const honeypot = form.querySelector<HTMLInputElement>("[name='website']");
+    const button = form.querySelector<HTMLButtonElement>("button");
+    const message = form.querySelector<HTMLElement>("[data-subscribe-message]");
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!(form instanceof HTMLFormElement) || !input || !button || !message) {
+        return;
+      }
+
+      if (!endpoint) {
+        message.textContent = "Email subscription is not live yet.";
+        return;
+      }
+
+      if (!form.reportValidity()) {
+        return;
+      }
+
+      const turnstileToken =
+        form
+          .querySelector<HTMLInputElement>("[name='cf-turnstile-response']")
+          ?.value.trim() ?? "";
+
+      if (!turnstileToken) {
+        message.textContent = "Complete the verification first.";
+        return;
+      }
+
+      if (honeypot?.value) {
+        form.reset();
+        message.textContent = "You're subscribed.";
+        window.turnstile?.reset();
+        return;
+      }
+
+      button.disabled = true;
+      message.textContent = "Subscribing...";
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: input.value.trim(),
+            website: honeypot?.value ?? "",
+            turnstileToken,
+            source: "home",
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Subscribe request failed");
+        }
+
+        form.reset();
+        message.textContent = "You're subscribed.";
+      } catch {
+        message.textContent = "Could not subscribe. Try again later.";
+      } finally {
+        button.disabled = false;
+        window.turnstile?.reset();
+      }
+    });
+  });
+</script>

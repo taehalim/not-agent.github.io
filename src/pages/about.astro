@@ -1,0 +1,58 @@
+---
+import PageShell from "../components/PageShell.astro";
+import { siteConfig } from "../config/site";
+import SiteLayout from "../layouts/SiteLayout.astro";
+
+const { title, description } = siteConfig.meta.about;
+---
+
+<SiteLayout title={title} description={description} canonicalPath="/about/">
+  <PageShell labelledby="about-title">
+    <h1
+      id="about-title"
+      class="mb-5 max-w-[var(--text-width)] text-base leading-[1.4] font-normal text-muted"
+    >
+      About
+    </h1>
+
+    <section class="max-w-[var(--text-width)]">
+      <h2 class="mb-[0.8rem] text-base leading-[1.45] font-normal text-text">
+        Taeha Lim
+      </h2>
+      <p class="m-0 text-base leading-[1.6] font-normal text-text">
+        I am an AI engineer based in Seoul. My work sits around agents,
+        developer workflows, and practical software interfaces.
+      </p>
+      <p class="mt-5 text-base leading-[1.6] font-normal text-text">
+        I care about tools that make complex systems easier to operate without
+        hiding the important details from the person using them.
+      </p>
+    </section>
+
+    <section class="mt-10 max-w-[var(--text-width)]">
+      <h2 class="mb-[0.8rem] text-base leading-[1.45] font-normal text-text">
+        Elsewhere
+      </h2>
+      <ul class="m-0 flex max-w-72 list-none flex-wrap gap-4 p-0">
+        <li>
+          <a
+            href={siteConfig.links.github}
+            target="_blank"
+            rel="noreferrer"
+            class="underline decoration-[0.06em] underline-offset-[0.2em]"
+          >
+            GitHub
+          </a>
+        </li>
+        <li>
+          <a
+            href={siteConfig.links.x}
+            target="_blank"
+            rel="noreferrer"
+            class="underline decoration-[0.06em] underline-offset-[0.2em]">X</a
+          >
+        </li>
+      </ul>
+    </section>
+  </PageShell>
+</SiteLayout>

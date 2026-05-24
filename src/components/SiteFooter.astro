@@ -1,0 +1,40 @@
+---
+import { siteConfig } from "../config/site";
+
+const footerClass =
+  "mx-auto flex w-[min(100%_-_var(--page-gutter),var(--content-width))] items-center justify-between gap-4 pt-[clamp(1.5rem,4vw,2.5rem)] pb-[clamp(2rem,5vw,3rem)] text-[0.95rem] font-normal leading-[1.4] text-muted max-[36rem]:flex-col max-[36rem]:items-start";
+const linkClass = "hover:text-text focus-visible:text-text";
+---
+
+<footer class={footerClass}>
+  <p class="m-0">
+    &copy; 2026 {siteConfig.personName} · <a
+      href={siteConfig.licenses.content.href}
+      target="_blank"
+      rel="license noreferrer"
+      class={linkClass}>{siteConfig.licenses.content.label}</a
+    > · <a
+      href={siteConfig.licenses.code.href}
+      target="_blank"
+      rel="license noreferrer"
+      class={linkClass}>{siteConfig.licenses.code.label}</a
+    >
+  </p>
+  <nav class="flex gap-4" aria-label="Footer links">
+    <a href="/rss.xml" class={linkClass}>RSS</a>
+    <a
+      href={siteConfig.links.github}
+      target="_blank"
+      rel="noreferrer"
+      class={linkClass}
+    >
+      GitHub
+    </a>
+    <a
+      href={siteConfig.links.x}
+      target="_blank"
+      rel="noreferrer"
+      class={linkClass}>X</a
+    >
+  </nav>
+</footer>

@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from "astro:content";
+
+import PageShell from "../../components/PageShell.astro";
+import { siteConfig } from "../../config/site";
+import SiteLayout from "../../layouts/SiteLayout.astro";
+
+export async function getStaticPaths() {
+  const posts = (await getCollection("posts")).filter(
+    (post) => !post.data.draft,
+  );
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const formatter = new Intl.DateTimeFormat("en", {
+  month: "short",
+  day: "numeric",
+  year: "numeric",
+});
+const metaDescription = `Post by ${siteConfig.personName}: ${post.data.title}.`;
+---
+
+<SiteLayout
+  title={`${post.data.title} - Taeha Lim`}
+  description={metaDescription}
+  canonicalPath={`/posts/${post.id}/`}
+  ogType="article"
+  publishedTime={post.data.date.toISOString()}
+>
+  <PageShell>
+    <article>
+      <header class="mb-7 max-w-[var(--text-width)] border-b border-line pb-5">
+        <h1 class="post-title text-2xl leading-[1.25] font-normal text-text">
+          {post.data.title}
+        </h1>
+        <time
+          class="post-meta mt-3 block text-sm leading-[1.4] text-muted"
+          datetime={post.data.date.toISOString()}
+        >
+          {formatter.format(post.data.date)}
+        </time>
+      </header>
+      <div class="prose-post">
+        <Content />
+      </div>
+    </article>
+  </PageShell>
+</SiteLayout>
