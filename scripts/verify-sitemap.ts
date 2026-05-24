@@ -1,7 +1,9 @@
 import { readdir, readFile } from "node:fs/promises";
 import { basename } from "node:path";
 
-const siteUrl = "https://not-agent.github.io";
+import { siteConfig } from "../src/config/site";
+
+const siteUrl = siteConfig.url;
 const distDir = new URL("../dist/", import.meta.url);
 const postsDir = new URL("../src/content/posts/", import.meta.url);
 

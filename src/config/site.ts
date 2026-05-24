@@ -1,5 +1,5 @@
 export const siteConfig = {
-  url: "https://not-agent.github.io",
+  url: "https://taeha.ultra.engineer",
   name: "Taeha's personal website",
   personName: "Taeha Lim",
   handle: "not-agent",

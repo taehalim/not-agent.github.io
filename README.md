@@ -78,11 +78,13 @@ not-agent/not-agent.github.io
 That repository name publishes at:
 
 ```text
-https://not-agent.github.io/
+https://taeha.ultra.engineer/
 ```
 
 Deployment uses `.github/workflows/deploy.yml`. In the GitHub repository, set
 Settings -> Pages -> Build and deployment -> Source to `GitHub Actions`.
+The GitHub Pages custom domain is `taeha.ultra.engineer`, backed by a DNS CNAME
+record that points to `not-agent.github.io`.
 
 The home page subscribe form reads `PUBLIC_SUBSCRIBE_ENDPOINT` and
 `PUBLIC_TURNSTILE_SITE_KEY` during the static build. Set those repository
