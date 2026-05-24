@@ -138,13 +138,13 @@ const unavailableMessage = !isEndpointConfigured
 
       if (honeypot?.value) {
         form.reset();
-        message.textContent = "You're subscribed.";
+        message.textContent = "Check your email to confirm.";
         window.turnstile?.reset();
         return;
       }
 
       button.disabled = true;
-      message.textContent = "Subscribing...";
+      message.textContent = "Sending confirmation...";
 
       try {
         const response = await fetch(endpoint, {
@@ -165,7 +165,7 @@ const unavailableMessage = !isEndpointConfigured
         }
 
         form.reset();
-        message.textContent = "You're subscribed.";
+        message.textContent = "Check your email to confirm.";
       } catch {
         message.textContent = "Could not subscribe. Try again later.";
       } finally {
