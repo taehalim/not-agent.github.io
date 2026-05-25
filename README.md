@@ -67,6 +67,26 @@ Format files:
 bun run format
 ```
 
+## Open Source Boundary
+
+This repository is the public static website only. It contains the Astro
+frontend, content, styling, RSS, sitemap, and GitHub Pages deployment workflow.
+
+It intentionally does not contain the email subscription backend, email delivery
+provider setup, webhook receiver, newsletter publishing automation, production
+secrets, or operational runbooks. The subscribe form is optional and talks to a
+configurable HTTPS endpoint supplied at build time.
+
+For a public deployment, prefer a neutral custom API domain such as:
+
+```text
+https://api.example.com/subscribe
+```
+
+over a provider-owned runtime URL. The endpoint URL is browser-visible because
+the form submits from the client, but its implementation does not need to be
+part of this repository.
+
 ## GitHub Pages
 
 This project is configured for the user site repository:
@@ -90,6 +110,9 @@ The home page subscribe form reads `PUBLIC_SUBSCRIBE_ENDPOINT` and
 `PUBLIC_TURNSTILE_SITE_KEY` during the static build. Set those repository
 variables when email subscriptions are ready. The subscription API is managed
 outside this public static-site repository.
+
+For local development, copy `.env.example` to `.env` and fill in local or
+production values as needed. `.env` is ignored and must not be committed.
 
 Goga Test font binaries are not committed to this public repository. Deployment
 restores them from a private font repository before building. Configure:
