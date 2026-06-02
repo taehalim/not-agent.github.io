@@ -1,4 +1,4 @@
-# not-agent.github.io
+# taehalim.com
 
 Personal website for taeha, built with the same core stack as `omnic-www`.
 
@@ -92,19 +92,19 @@ part of this repository.
 This project is configured for the user site repository:
 
 ```text
-not-agent/not-agent.github.io
+taehalim/not-agent.github.io
 ```
 
 That repository name publishes at:
 
 ```text
-https://taeha.ultra.engineer/
+https://taehalim.com/
 ```
 
 Deployment uses `.github/workflows/deploy.yml`. In the GitHub repository, set
 Settings -> Pages -> Build and deployment -> Source to `GitHub Actions`.
-The GitHub Pages custom domain is `taeha.ultra.engineer`, backed by a DNS CNAME
-record that points to `not-agent.github.io`.
+The GitHub Pages custom domain is `taehalim.com`, backed by apex-domain DNS
+records for GitHub Pages.
 
 The home page subscribe form reads `PUBLIC_SUBSCRIBE_ENDPOINT` and
 `PUBLIC_TURNSTILE_SITE_KEY` during the static build. Set those repository
@@ -118,7 +118,7 @@ Goga Test font binaries are not committed to this public repository. Deployment
 restores them from a private font repository before building. Configure:
 
 ```text
-PRIVATE_FONTS_REPOSITORY=not-agent/<private-font-repo>
+PRIVATE_FONTS_REPOSITORY=taehalim/<private-font-repo>
 PRIVATE_FONTS_DEPLOY_KEY=<read-only deploy key for the private font repo>
 ```
 
@@ -136,7 +136,7 @@ If this site is moved to a project repository with another name, add a matching
 
 ```ts
 export default defineConfig({
-  site: "https://not-agent.github.io",
+  site: "https://taehalim.github.io",
   base: "/repo-name",
 });
 ```

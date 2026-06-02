@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://not-agent.github.io/sitemap-index.xml
+Sitemap: https://taehalim.com/sitemap-index.xml

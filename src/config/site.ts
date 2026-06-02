@@ -1,8 +1,8 @@
 export const siteConfig = {
-  url: "https://taeha.ultra.engineer",
+  url: "https://taehalim.com",
   name: "Taeha's personal website",
   personName: "Taeha Lim",
-  handle: "not-agent",
+  handle: "taehalim",
   role: "AI Eng. @Marker-Inc-Korea",
   location: "Seoul",
   avatarUrl: "https://avatars.githubusercontent.com/u/127670089?v=4",
@@ -10,7 +10,7 @@ export const siteConfig = {
     "Personal website for taeha, an AI engineer in Seoul building tools around agentic workflows.",
   links: {
     home: "/",
-    github: "https://github.com/not-agent",
+    github: "https://github.com/taehalim",
     x: "https://x.com/aetaeha",
     company: "https://github.com/Marker-Inc-Korea",
   },
